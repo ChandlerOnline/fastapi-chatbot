@@ -1,9 +1,10 @@
-import os # app.py
-
-OPEN_API_KEY = os.getenv("OPEN_API_KEY")
-
+import os
 from fastapi import FastAPI, Request
 from agents import Agent, Runner
+import openai
+
+# Load API key
+openai.api_key = os.getenv("OPEN_API_KEY")
 
 app = FastAPI()
 
@@ -21,7 +22,7 @@ def root():
 @app.post("/webhook")
 async def receive_message(request: Request):
     data = await request.json()
-    user_input = data.get("message", "")
+    user_input = data.get("last_input_text", "")
 
     if not user_input:
         return {"error": "No message received."}
