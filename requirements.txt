@@ -1,2 +1,3 @@
-open-agents
-python-dotnev
+openai-agents
+python-dotenv
+fastapi
