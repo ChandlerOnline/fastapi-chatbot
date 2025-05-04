@@ -1,4 +1,7 @@
-# app.py
+import os # app.py
+
+OPEN_API_KEY = os.getenv("OPEN_API_KEY")
+
 from fastapi import FastAPI, Request
 from agents import Agent, Runner
 
