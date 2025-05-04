@@ -1,6 +1,5 @@
 # app.py
 from fastapi import FastAPI, Request
-import asyncio
 from agents import Agent, Runner
 
 app = FastAPI()
@@ -11,6 +10,10 @@ agent = Agent(
 You are a friendly, personable assistant who loves memes and jokes. Be upbeat, casual, and fun, especially about electric cars!
 """
 )
+
+@app.get("/")
+def root():
+    return {"message": "FastAPI chatbot is running."}
 
 @app.post("/webhook")
 async def receive_message(request: Request):
