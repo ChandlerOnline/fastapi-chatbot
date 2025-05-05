@@ -1,33 +1,20 @@
-import os
 from fastapi import FastAPI, Request
-from agents import Agent, Runner
-import openai
+import os
+from dotenv import load_dotenv
 
-# Load API key
-openai.api_key = os.getenv("OPEN_API_KEY")
+load_dotenv()
 
 app = FastAPI()
 
-agent = Agent(
-    name="Friendly Assistant",
-    instructions="""
-You are a friendly, personable assistant who loves memes and jokes. Be upbeat, casual, and fun, especially about electric cars!
-"""
-)
-
-@app.get("/")
-def root():
-    return {"message": "FastAPI chatbot is running."}
-
 @app.post("/webhook")
-async def receive_message(request: Request):
+async def receive_webhook(request: Request):
     data = await request.json()
-    user_input = data.get("last_input_text", "")
+    print("Received data:", data)
 
-    if not user_input:
-        return {"error": "No message received."}
+    # Extract the message text (based on what you said you're receiving)
+    last_input = data.get("last_input_text", "No input found")
 
-    result = await Runner.run(agent, f"You: {user_input}")
-    response = result.final_output
-
-    return {"reply": response}
+    # Return a simple JSON response
+    return {
+        "reply": f"Received your message: {last_input}"
+    }
