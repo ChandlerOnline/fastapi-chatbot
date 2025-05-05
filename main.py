@@ -1,20 +1,18 @@
 from fastapi import FastAPI, Request
-import os
-from dotenv import load_dotenv
-
-load_dotenv()
+import json
 
 app = FastAPI()
 
-# Define the internal route path, not the Make.com URL
 @app.post("/webhook")
 async def receive_webhook(request: Request):
+    # Get the incoming JSON data
     data = await request.json()
-    print("Received data:", data)
 
-    last_input = data.get("last_input_text", "No input found")
+    # Print the received data to the console
+    print("Received data:", json.dumps(data, indent=4))
 
+    # Return a simple response confirming the data was received
     return {
-        "reply": f"Received your message: {last_input}"
+        "status": "Received",
+        "received_data": data
     }
-
